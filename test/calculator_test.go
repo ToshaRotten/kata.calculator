@@ -24,22 +24,11 @@ func TestCalculate(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(fmt.Sprintf("%d %s %d", tc.a, tc.operator, tc.b), func(t *testing.T) {
-			result, err := Services.Calculate(tc.a, tc.b, tc.operator)
+			result := Services.Calculate(tc.a, tc.b, tc.operator)
 
 			// Проверяем ожидаемый результат
 			if result != tc.expected {
 				t.Errorf("Ожидалось %d, получено %d", tc.expected, result)
-			}
-
-			// Проверяем ошибку
-			if err != nil {
-				if err.Error() != tc.errMsg {
-					t.Errorf("Ожидаемая ошибка: %s, получена ошибка: %s", tc.errMsg, err.Error())
-				}
-			} else {
-				if tc.errMsg != "" {
-					t.Errorf("Ожидаемая ошибка: %s, получена ошибка: <nil>", tc.errMsg)
-				}
 			}
 		})
 	}

@@ -1,11 +1,10 @@
 package Services
 
 import (
-	"fmt"
 	"strings"
 )
 
-func RomanToArabic(roman string) (int, error) {
+func RomanToArabic(roman string) int {
 	romanValues := map[rune]int{
 		'I': 1,
 		'V': 5,
@@ -28,10 +27,10 @@ func RomanToArabic(roman string) (int, error) {
 		}
 		prevValue = currentValue
 	}
-	return total, nil
+	return total
 }
 
-func ArabicToRoman(num int) (string, error) {
+func ArabicToRoman(num int) string {
 
 	// Массив символов римских цифр и их соответствующих значения
 	romanDigits := []struct {
@@ -61,16 +60,16 @@ func ArabicToRoman(num int) (string, error) {
 		}
 	}
 
-	return romanNum, nil
+	return romanNum
 }
 
-func SeparateRoman(input string) (string, string, string, error) {
+func SeparateRoman(input string) (string, string, string) {
 	input = strings.TrimSpace(input)
 
 	parts := strings.Split(input, " ")
 	if len(parts) != 3 {
-		return "", "", "", fmt.Errorf("неверный формат выражения")
+		panic("неверный формат выражения")
 	}
 
-	return parts[0], parts[2], parts[1], nil
+	return parts[0], parts[2], parts[1]
 }

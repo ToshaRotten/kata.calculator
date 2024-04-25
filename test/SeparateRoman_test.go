@@ -21,23 +21,13 @@ func TestSeparateRoman(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.input, func(t *testing.T) {
-			operand1, operand2, operator, err := Services.SeparateRoman(tc.input)
+			operand1, operand2, operator := Services.SeparateRoman(tc.input)
 
 			// Проверяем ожидаемые значения операндов и оператора
 			if operand1 != tc.expectedOperand1 || operand2 != tc.expectedOperand2 || operator != tc.expectedOperator {
 				t.Errorf("Для входа '%s' ожидались операнды '%s', '%s' и оператор '%s'", tc.input, tc.expectedOperand1, tc.expectedOperand2, tc.expectedOperator)
 			}
 
-			// Проверяем ошибку
-			if err != nil {
-				if err.Error() != tc.expectedError {
-					t.Errorf("Для входа '%s' ожидалась ошибка '%s', получена ошибка: '%s'", tc.input, tc.expectedError, err.Error())
-				}
-			} else {
-				if tc.expectedError != "" {
-					t.Errorf("Для входа '%s' ожидалась ошибка '%s', получена ошибка: <nil>", tc.input, tc.expectedError)
-				}
-			}
 		})
 	}
 }

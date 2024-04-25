@@ -26,23 +26,13 @@ func TestArabicToRoman(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(fmt.Sprintf("%d to Roman", tc.input), func(t *testing.T) {
-			output, err := Services.ArabicToRoman(tc.input)
+			output := Services.ArabicToRoman(tc.input)
 
 			// Проверяем ожидаемый результат
 			if output != tc.expectedOutput {
 				t.Errorf("Для числа %d ожидалось '%s', получено '%s'", tc.input, tc.expectedOutput, output)
 			}
 
-			// Проверяем ошибку
-			if err != nil {
-				if err.Error() != tc.expectedError {
-					t.Errorf("Для числа %d ожидалась ошибка '%s', получена ошибка: '%s'", tc.input, tc.expectedError, err.Error())
-				}
-			} else {
-				if tc.expectedError != "" {
-					t.Errorf("Для числа %d ожидалась ошибка '%s', получена ошибка: <nil>", tc.input, tc.expectedError)
-				}
-			}
 		})
 	}
 }
