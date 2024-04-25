@@ -32,9 +32,6 @@ func RomanToArabic(roman string) (int, error) {
 }
 
 func ArabicToRoman(num int) (string, error) {
-	if num <= 0 || num > 3999 {
-		return "", fmt.Errorf("неверное значение: %d, арабские числа должны быть от 1 до 3999", num)
-	}
 
 	// Массив символов римских цифр и их соответствующих значения
 	romanDigits := []struct {
