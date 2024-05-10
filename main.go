@@ -2,41 +2,55 @@ package main
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
-	"kata.calculator/Services"
+	"log/slog"
 	"os"
+
+	"kata.calculator/services"
+	"kata.calculator/services/calculate"
 )
 
 func main() {
-	fmt.Println("Hello Kata!!!")
-	fmt.Print("Введите выражение в формате 'a + b': ")
+	fmt.Println("Введите выражение в формате 'a + b': ")
 
 	reader := bufio.NewReader(os.Stdin)
-
 	input, err := reader.ReadString('\n')
 	if err != nil {
-		panic(err)
+		slog.Error(err.Error())
 	}
 
-	whatKindOfExpression := Services.WhatKindOfExpression(input)
+	whatKindOfExpression, err := services.WhatKindOfExpression(input)
+	if err != nil {
+		slog.Error(err.Error())
+	}
 
 	if whatKindOfExpression {
-		operand1, operand2, operator := Services.ValidateExpression(input)
-		result := Services.Calculate(operand1, operand2, operator)
-
+		operand1, operand2, operator := services.ValidateExpression(input)
+		result, err := calculate.Calculate(operand1, operand2, operator)
+		if err != nil {
+			slog.Error(err.Error())
+		}
 		fmt.Println(result)
-	} else {
-		operandRoman1, operandRoman2, operator := Services.SeparateRoman(input)
 
-		number1 := Services.RomanToArabic(operandRoman1)
-		number2 := Services.RomanToArabic(operandRoman2)
-		result := Services.Calculate(number1, number2, operator)
+	} else {
+		operandRoman1, operandRoman2, operator, err := services.SeparateRoman(input)
+		if err != nil {
+			slog.Error(err.Error())
+		}
+
+		number1 := services.RomanToArabic(operandRoman1)
+		number2 := services.RomanToArabic(operandRoman2)
+		result, err := calculate.Calculate(number1, number2, operator)
+		if err != nil {
+			slog.Error(err.Error())
+		}
 
 		if result > 1 {
-			resultRoman := Services.ArabicToRoman(result)
+			resultRoman := services.ArabicToRoman(result)
 			fmt.Println(resultRoman)
 		} else {
-			panic("Выдача паники, так как в римской системе нет отрицательных чисел.")
+			slog.Error(errors.New("no negatives in roman").Error())
 		}
 	}
 }
